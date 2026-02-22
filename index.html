@@ -56,28 +56,110 @@
     font-size: 0.9rem;
   }
 
-  /* Sync status */
-  .sync-status {
+  /* Auth screen */
+  .auth-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+  }
+
+  .auth-box {
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+  }
+
+  .auth-box h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .auth-box .subtitle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 28px;
+  }
+
+  .auth-box .form-group {
+    margin-bottom: 14px;
+    text-align: left;
+  }
+
+  .auth-box .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .auth-box input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .auth-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .auth-box .error {
+    color: var(--danger);
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+    min-height: 1.2em;
+  }
+
+  .auth-box .btn { width: 100%; padding: 12px; font-size: 1rem; margin-bottom: 12px; }
+
+  .auth-box .toggle-link {
+    color: var(--accent);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .auth-box .toggle-link:hover { text-decoration: underline; }
+
+  .auth-box .forgot-link {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 8px;
+  }
+
+  .auth-box .forgot-link:hover { color: var(--accent); }
+
+  .auth-box .success-msg {
+    color: var(--success);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  /* User bar */
+  .user-bar {
     text-align: center;
     margin-bottom: 16px;
     font-size: 0.78rem;
     color: var(--text-muted);
+  }
+
+  .user-bar .sign-out {
+    color: var(--accent);
     cursor: pointer;
+    margin-left: 8px;
   }
 
-  .sync-status .dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-
-  .sync-status .dot.green { background: var(--success); }
-  .sync-status .dot.yellow { background: #feca57; }
-  .sync-status .dot.red { background: var(--danger); }
-  .sync-status .dot.gray { background: var(--text-muted); }
+  .user-bar .sign-out:hover { text-decoration: underline; }
 
   /* Toolbar */
   .toolbar {
@@ -111,7 +193,6 @@
   .btn.primary:hover { opacity: 0.9; }
   .btn.danger { border-color: var(--danger); color: var(--danger); }
   .btn.danger:hover { background: var(--danger); color: #fff; }
-  .btn.small { padding: 4px 10px; font-size: 0.78rem; }
 
   /* Filter pills */
   .filter-bar {
@@ -160,10 +241,7 @@
     margin-bottom: 10px;
   }
 
-  .event-name {
-    font-size: 1.15rem;
-    font-weight: 600;
-  }
+  .event-name { font-size: 1.15rem; font-weight: 600; }
 
   .event-category {
     font-size: 0.75rem;
@@ -180,21 +258,9 @@
     margin-bottom: 14px;
   }
 
-  .event-countdown {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .countdown-unit {
-    text-align: center;
-  }
-
-  .countdown-value {
-    font-size: 1.8rem;
-    font-weight: 700;
-    line-height: 1;
-  }
+  .event-countdown { display: flex; gap: 16px; flex-wrap: wrap; }
+  .countdown-unit { text-align: center; }
+  .countdown-value { font-size: 1.8rem; font-weight: 700; line-height: 1; }
 
   .countdown-label {
     font-size: 0.7rem;
@@ -275,15 +341,9 @@
     overflow-y: auto;
   }
 
-  .modal h2 {
-    font-size: 1.3rem;
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
+  .modal h2 { font-size: 1.3rem; font-weight: 500; margin-bottom: 20px; }
 
-  .form-group {
-    margin-bottom: 16px;
-  }
+  .form-group { margin-bottom: 16px; }
 
   .form-group label {
     display: block;
@@ -313,17 +373,7 @@
     border-color: var(--accent);
   }
 
-  .form-group .hint {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  .color-options {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
+  .color-options { display: flex; gap: 10px; flex-wrap: wrap; }
 
   .color-swatch {
     width: 32px;
@@ -344,20 +394,14 @@
     margin-top: 24px;
   }
 
-  /* Empty state */
   .empty-state {
     text-align: center;
     padding: 60px 20px;
     color: var(--text-muted);
   }
 
-  .empty-state h3 {
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin-bottom: 8px;
-  }
+  .empty-state h3 { font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
 
-  /* Sort indicator */
   .sort-select {
     padding: 8px 12px;
     border: 1px solid var(--border);
@@ -370,97 +414,12 @@
 
   .sort-select:focus { outline: none; border-color: var(--accent); }
 
-  /* Lock screen */
-  .lock-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .lock-screen.hidden { display: none; }
-
-  .lock-box {
+  .loading-spinner {
     text-align: center;
-    max-width: 340px;
-    width: 100%;
-  }
-
-  .lock-box h1 {
-    font-size: 2rem;
-    font-weight: 300;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .lock-box p {
+    padding: 40px;
     color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-bottom: 24px;
   }
 
-  .lock-box input {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--card-bg);
-    color: var(--text);
-    font-size: 1.1rem;
-    text-align: center;
-    letter-spacing: 8px;
-    margin-bottom: 16px;
-  }
-
-  .lock-box input:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-
-  .lock-box .error {
-    color: var(--danger);
-    font-size: 0.82rem;
-    margin-bottom: 12px;
-    min-height: 1.2em;
-  }
-
-  .lock-box .btn { width: 100%; padding: 12px; font-size: 1rem; }
-
-  .lock-box .setup-note {
-    color: var(--text-muted);
-    font-size: 0.78rem;
-    margin-top: 16px;
-  }
-
-  .lock-box .forgot-link {
-    color: var(--accent);
-    font-size: 0.82rem;
-    cursor: pointer;
-    margin-top: 12px;
-    display: inline-block;
-  }
-
-  .lock-box .forgot-link:hover { text-decoration: underline; }
-
-  .recovery-code {
-    font-family: monospace;
-    font-size: 1.3rem;
-    letter-spacing: 3px;
-    background: var(--bg);
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    margin: 16px 0;
-    user-select: all;
-    word-break: break-all;
-  }
-
-  /* Responsive */
   @media (max-width: 500px) {
     .countdown-value { font-size: 1.4rem; }
     .event-countdown { gap: 12px; }
@@ -471,27 +430,80 @@
 </head>
 <body>
 
-<!-- Lock Screen -->
-<div class="lock-screen" id="lockScreen">
-  <div class="lock-box">
+<!-- Auth Screen -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
     <h1>Dwindle</h1>
-    <p id="lockMessage">Enter your password</p>
-    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
-    <div class="error" id="lockError"></div>
-    <button class="btn primary" id="lockBtn" onclick="handleLock()">Unlock</button>
-    <p class="setup-note" id="lockSetupNote"></p>
-    <span class="forgot-link" id="forgotLink" onclick="showForgotPassword()" style="display:none;">Forgot password?</span>
+    <p class="subtitle">Track your moments &mdash; past and future</p>
+
+    <!-- Sign In Form -->
+    <div id="signInForm">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="signInEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signInPassword" placeholder="Password">
+      </div>
+      <div class="error" id="signInError"></div>
+      <button class="btn primary" onclick="signIn()">Sign In</button>
+      <div>
+        <span class="toggle-link" onclick="showSignUp()">Create an account</span>
+      </div>
+      <span class="forgot-link" onclick="showResetPassword()">Forgot password?</span>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signUpForm" style="display:none;">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="signUpName" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="signUpEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signUpPassword" placeholder="Choose a password">
+      </div>
+      <div class="error" id="signUpError"></div>
+      <button class="btn primary" onclick="signUp()">Create Account</button>
+      <div>
+        <span class="toggle-link" onclick="showSignIn()">Already have an account? Sign in</span>
+      </div>
+    </div>
+
+    <!-- Reset Password Form -->
+    <div id="resetPwForm" style="display:none;">
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:16px;">
+        Enter your email and we'll send you a link to reset your password.
+      </p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="resetEmail" placeholder="you@example.com">
+      </div>
+      <div class="error" id="resetError"></div>
+      <div class="success-msg" id="resetSuccess" style="display:none;"></div>
+      <button class="btn primary" onclick="resetPassword()">Send Reset Link</button>
+      <div>
+        <span class="toggle-link" onclick="showSignIn()">Back to sign in</span>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- Main App -->
 <div class="container" id="appContainer" style="display:none;">
   <header>
     <h1>Dwindle</h1>
     <p>Track your moments &mdash; past and future</p>
   </header>
 
-  <div class="sync-status" id="syncStatus" onclick="openSettingsModal()">
-    <span class="dot gray"></span> Click to set up cloud sync
+  <div class="user-bar" id="userBar">
+    <span id="userEmail"></span>
+    <span class="sign-out" onclick="signOut()">Sign out</span>
   </div>
 
   <div class="toolbar">
@@ -505,19 +517,20 @@
         <option value="name-asc">Name (A-Z)</option>
         <option value="created-desc">Recently added</option>
       </select>
-      <button class="btn" onclick="exportData()" title="Export data">Export</button>
-      <button class="btn" onclick="document.getElementById('importInput').click()" title="Import data">Import</button>
+      <button class="btn" onclick="exportData()">Export</button>
+      <button class="btn" onclick="document.getElementById('importInput').click()">Import</button>
       <input type="file" id="importInput" accept=".json" style="display:none" onchange="importData(event)">
-      <button class="btn" onclick="openChangePasswordModal()" title="Change password">Lock</button>
     </div>
   </div>
 
   <div class="filter-bar" id="filterBar"></div>
-  <div class="events-grid" id="eventsGrid"></div>
+  <div class="events-grid" id="eventsGrid">
+    <div class="loading-spinner">Loading events...</div>
+  </div>
 </div>
 
-<!-- Add/Edit Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+<!-- Add/Edit Event Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===event.currentTarget)closeModal()">
   <div class="modal">
     <h2 id="modalTitle">New Event</h2>
     <form onsubmit="saveEvent(event)">
@@ -556,7 +569,7 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal-overlay" id="deleteOverlay" onclick="closeDeleteOutside(event)">
+<div class="modal-overlay" id="deleteOverlay" onclick="if(event.target===event.currentTarget)closeDelete()">
   <div class="modal" style="max-width:360px; text-align:center;">
     <h2>Delete Event?</h2>
     <p style="color:var(--text-muted); margin-bottom:24px;">This cannot be undone.</p>
@@ -568,309 +581,278 @@
   </div>
 </div>
 
-<!-- Settings Modal -->
-<div class="modal-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
-  <div class="modal">
-    <h2>Cloud Sync Settings</h2>
-    <p style="color:var(--text-muted); margin-bottom:16px; font-size:0.85rem;">
-      Your events are automatically saved to a GitHub Gist so they're available on any device. You only need to set this up once.
-    </p>
-    <div class="form-group">
-      <label>GitHub Personal Access Token</label>
-      <input type="password" id="settingsToken" placeholder="ghp_...">
-      <p class="hint">
-        Create one at GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic). Only the <strong>gist</strong> scope is needed.
-      </p>
-    </div>
-    <div class="form-group" id="gistIdGroup">
-      <label>Gist ID (leave blank to create a new one)</label>
-      <input type="text" id="settingsGistId" placeholder="Auto-created on first sync">
-      <p class="hint">If you already set up Dwindle on another device, paste that Gist ID here to sync.</p>
-    </div>
-    <div class="form-actions">
-      <button type="button" class="btn danger" onclick="clearSyncSettings()" style="margin-right:auto;">Disconnect</button>
-      <button type="button" class="btn" onclick="closeSettings()">Cancel</button>
-      <button type="button" class="btn primary" onclick="saveSyncSettings()">Save &amp; Sync</button>
-    </div>
-  </div>
-</div>
-
-<!-- Change Password Modal -->
-<div class="modal-overlay" id="changePwOverlay" onclick="if(event.target===event.currentTarget)closeChangePw()">
-  <div class="modal" style="max-width:400px;">
-    <h2 id="changePwTitle">Change Password</h2>
-    <div class="form-group" id="changePwCurrentGroup">
-      <label>Current Password</label>
-      <input type="password" id="changePwCurrent" placeholder="Enter current password">
-    </div>
-    <div class="form-group">
-      <label id="changePwNewLabel">New Password</label>
-      <input type="password" id="changePwNew" placeholder="Enter new password">
-    </div>
-    <div class="error" id="changePwError" style="font-size:0.82rem; min-height:1.2em; margin-bottom:8px;"></div>
-    <div class="form-actions">
-      <button class="btn" onclick="closeChangePw()">Cancel</button>
-      <button class="btn primary" onclick="handleChangePassword()">Update Password</button>
-    </div>
-  </div>
-</div>
-
-<!-- Recovery Code Modal -->
-<div class="modal-overlay" id="recoveryOverlay">
-  <div class="modal" style="max-width:420px; text-align:center;">
-    <h2>Your Recovery Code</h2>
-    <p style="color:var(--text-muted); margin-bottom:8px; font-size:0.85rem;">
-      Save this code somewhere safe. You'll need it if you forget your password.
-    </p>
-    <div class="recovery-code" id="recoveryCodeDisplay"></div>
-    <p style="color:var(--danger); font-size:0.82rem; margin-bottom:16px;">
-      This code will only be shown once.
-    </p>
-    <div class="form-actions" style="justify-content:center;">
-      <button class="btn" onclick="copyRecoveryCode()">Copy Code</button>
-      <button class="btn primary" onclick="closeRecoveryModal()">I've Saved It</button>
-    </div>
-  </div>
-</div>
-
-<!-- Forgot Password Modal -->
-<div class="modal-overlay" id="forgotPwOverlay" onclick="if(event.target===event.currentTarget)closeForgotPw()">
-  <div class="modal" style="max-width:400px;">
-    <h2>Reset Password</h2>
-    <p style="color:var(--text-muted); margin-bottom:16px; font-size:0.85rem;">
-      Enter your recovery code to set a new password.
-    </p>
-    <div class="form-group">
-      <label>Recovery Code</label>
-      <input type="text" id="forgotRecoveryCode" placeholder="Enter your recovery code" style="font-family:monospace; letter-spacing:2px;">
-    </div>
-    <div class="form-group">
-      <label>New Password</label>
-      <input type="password" id="forgotNewPw" placeholder="Enter new password">
-    </div>
-    <div class="error" id="forgotPwError" style="font-size:0.82rem; min-height:1.2em; margin-bottom:8px;"></div>
-    <div class="form-actions">
-      <button class="btn" onclick="closeForgotPw()">Cancel</button>
-      <button class="btn primary" onclick="handleForgotPassword()">Reset Password</button>
-    </div>
-  </div>
-</div>
-
 <script>
+  // --- Supabase Config ---
+  const SUPABASE_URL = 'https://lywgiexlfhygvavyoiwm.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable__ImyqxfjOcaGwq6FF0ApJw_Mw8KTZXb';
+  const SESSION_KEY = 'dwindle_session';
+
+  let session = null;
+  let currentUser = null;
+
+  // --- Supabase REST Client ---
+  function supabaseHeaders(useAuth) {
+    const h = { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' };
+    if (useAuth && session) {
+      h['Authorization'] = `Bearer ${session.access_token}`;
+    } else {
+      h['Authorization'] = `Bearer ${SUPABASE_KEY}`;
+    }
+    return h;
+  }
+
+  async function supabaseAuth(endpoint, body) {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/${endpoint}`, {
+      method: 'POST',
+      headers: supabaseHeaders(false),
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error_description || data.msg || data.message || 'Auth error');
+    return data;
+  }
+
+  function saveSession(s) {
+    session = s;
+    currentUser = s.user;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  }
+
+  function clearSession() {
+    session = null;
+    currentUser = null;
+    localStorage.removeItem(SESSION_KEY);
+  }
+
+  function loadSession() {
+    try {
+      const s = JSON.parse(localStorage.getItem(SESSION_KEY));
+      if (s && s.access_token) {
+        session = s;
+        currentUser = s.user;
+        return true;
+      }
+    } catch {}
+    return false;
+  }
+
+  async function refreshSession() {
+    if (!session || !session.refresh_token) return false;
+    try {
+      const data = await supabaseAuth('token?grant_type=refresh_token', {
+        refresh_token: session.refresh_token
+      });
+      saveSession(data);
+      return true;
+    } catch {
+      clearSession();
+      return false;
+    }
+  }
+
+  // --- Auth UI ---
+  function showSignIn() {
+    document.getElementById('signInForm').style.display = '';
+    document.getElementById('signUpForm').style.display = 'none';
+    document.getElementById('resetPwForm').style.display = 'none';
+    document.getElementById('signInError').textContent = '';
+  }
+
+  function showSignUp() {
+    document.getElementById('signInForm').style.display = 'none';
+    document.getElementById('signUpForm').style.display = '';
+    document.getElementById('resetPwForm').style.display = 'none';
+    document.getElementById('signUpError').textContent = '';
+  }
+
+  function showResetPassword() {
+    document.getElementById('signInForm').style.display = 'none';
+    document.getElementById('signUpForm').style.display = 'none';
+    document.getElementById('resetPwForm').style.display = '';
+    document.getElementById('resetError').textContent = '';
+    document.getElementById('resetSuccess').style.display = 'none';
+  }
+
+  async function signIn() {
+    const email = document.getElementById('signInEmail').value.trim();
+    const password = document.getElementById('signInPassword').value;
+    const errorEl = document.getElementById('signInError');
+    errorEl.textContent = '';
+
+    if (!email || !password) { errorEl.textContent = 'Please fill in both fields.'; return; }
+
+    try {
+      const data = await supabaseAuth('token?grant_type=password', { email, password });
+      saveSession(data);
+      showApp();
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  }
+
+  async function signUp() {
+    const name = document.getElementById('signUpName').value.trim();
+    const email = document.getElementById('signUpEmail').value.trim();
+    const password = document.getElementById('signUpPassword').value;
+    const errorEl = document.getElementById('signUpError');
+    errorEl.textContent = '';
+
+    if (!name || !email || !password) { errorEl.textContent = 'Please fill in all fields.'; return; }
+
+    try {
+      const data = await supabaseAuth('signup', {
+        email, password,
+        data: { full_name: name }
+      });
+      if (data.access_token) {
+        saveSession(data);
+        showApp();
+      } else {
+        errorEl.textContent = 'Check your email to confirm your account, then sign in.';
+        errorEl.style.color = 'var(--success)';
+      }
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  }
+
+  async function resetPassword() {
+    const email = document.getElementById('resetEmail').value.trim();
+    const errorEl = document.getElementById('resetError');
+    const successEl = document.getElementById('resetSuccess');
+    errorEl.textContent = '';
+    successEl.style.display = 'none';
+
+    if (!email) { errorEl.textContent = 'Please enter your email.'; return; }
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/recover`, {
+        method: 'POST',
+        headers: supabaseHeaders(false),
+        body: JSON.stringify({ email })
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Error sending reset email');
+      }
+      successEl.textContent = 'Password reset link sent! Check your email.';
+      successEl.style.display = '';
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  }
+
+  async function signOut() {
+    try {
+      await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+        method: 'POST',
+        headers: supabaseHeaders(true)
+      });
+    } catch {}
+    clearSession();
+    events = [];
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('authScreen').style.display = '';
+    showSignIn();
+  }
+
+  // --- Auth keyboard shortcuts ---
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('signInForm').style.display !== 'none' &&
+          document.getElementById('authScreen').style.display !== 'none') {
+        signIn();
+      } else if (document.getElementById('signUpForm').style.display !== 'none' &&
+                 document.getElementById('authScreen').style.display !== 'none') {
+        signUp();
+      }
+    }
+    if (e.key === 'Escape') {
+      closeModal();
+      closeDelete();
+    }
+  });
+
+  // --- Supabase Data ---
+  async function dbFetch(method, path, body) {
+    const opts = {
+      method,
+      headers: {
+        ...supabaseHeaders(true),
+        'Prefer': method === 'POST' ? 'return=representation' : (method === 'GET' ? '' : 'return=representation')
+      }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, opts);
+    if (!res.ok) throw new Error(`DB error: ${res.status}`);
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  }
+
+  async function loadEventsFromDB() {
+    try {
+      const rows = await dbFetch('GET', 'dwindle_events?select=*&order=created_at.desc');
+      events = rows.map(r => ({
+        id: r.id,
+        name: r.name,
+        date: r.date,
+        category: r.category || '',
+        notes: r.notes || '',
+        color: r.color || '#6c63ff',
+        createdAt: new Date(r.created_at).getTime()
+      }));
+      renderFilterBar();
+      renderEvents();
+    } catch (err) {
+      console.error('Failed to load events:', err);
+    }
+  }
+
+  async function insertEventDB(ev) {
+    const rows = await dbFetch('POST', 'dwindle_events', {
+      user_id: currentUser.id,
+      name: ev.name,
+      date: ev.date,
+      category: ev.category,
+      notes: ev.notes,
+      color: ev.color
+    });
+    return rows[0];
+  }
+
+  async function updateEventDB(id, ev) {
+    await dbFetch('PATCH', `dwindle_events?id=eq.${id}`, {
+      name: ev.name,
+      date: ev.date,
+      category: ev.category,
+      notes: ev.notes,
+      color: ev.color
+    });
+  }
+
+  async function deleteEventDB(id) {
+    await dbFetch('DELETE', `dwindle_events?id=eq.${id}`);
+  }
+
+  // --- App State ---
   const COLORS = [
     '#6c63ff', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3',
     '#54a0ff', '#5f27cd', '#01a3a4', '#f368e0', '#ff6348',
     '#2ed573', '#1e90ff', '#eccc68', '#a29bfe', '#fd79a8'
   ];
 
-  const REPO_OWNER = 'elcoche2025';
-  const REPO_NAME = 'dwindle';
-  const DATA_FILE = 'data.json';
-
   let events = [];
   let activeFilter = 'all';
   let selectedColor = COLORS[0];
-  let syncTimer = null;
-  let fileSha = null;
 
-  // --- Init ---
-  async function init() {
-    loadEvents();
+  function showApp() {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('appContainer').style.display = '';
+    document.getElementById('userEmail').textContent = currentUser.email;
     renderColorSwatches();
     renderFilterBar();
-    renderEvents();
+    loadEventsFromDB();
     setInterval(renderCountdowns, 1000);
-    updateSyncStatusDisplay();
-
-    // If sync is configured, pull from cloud on load
-    if (getToken()) {
-      await pullFromCloud();
-    }
-  }
-
-  // --- Local Storage ---
-  function loadEvents() {
-    try {
-      events = JSON.parse(localStorage.getItem('dwindle_events') || '[]');
-    } catch { events = []; }
-  }
-
-  function saveEvents() {
-    localStorage.setItem('dwindle_events', JSON.stringify(events));
-    scheduleSyncToCloud();
-  }
-
-  // --- GitHub Gist Sync ---
-  function getToken() {
-    return localStorage.getItem('dwindle_gh_token') || '';
-  }
-
-  function getGistId() {
-    return localStorage.getItem('dwindle_gist_id') || '';
-  }
-
-  function updateSyncStatusDisplay(msg, color) {
-    const el = document.getElementById('syncStatus');
-    if (msg) {
-      el.innerHTML = `<span class="dot ${color}"></span> ${msg}`;
-      return;
-    }
-    if (getToken() && getGistId()) {
-      el.innerHTML = `<span class="dot green"></span> Synced to cloud`;
-    } else if (getToken()) {
-      el.innerHTML = `<span class="dot yellow"></span> Setting up sync...`;
-    } else {
-      el.innerHTML = `<span class="dot gray"></span> Click to set up cloud sync`;
-    }
-  }
-
-  function scheduleSyncToCloud() {
-    if (!getToken()) return;
-    if (syncTimer) clearTimeout(syncTimer);
-    updateSyncStatusDisplay('Saving...', 'yellow');
-    syncTimer = setTimeout(() => pushToCloud(), 1500);
-  }
-
-  async function pushToCloud() {
-    const token = getToken();
-    const gistId = getGistId();
-    if (!token) return;
-
-    try {
-      const data = JSON.stringify(events, null, 2);
-
-      if (gistId) {
-        // Update existing gist
-        const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            files: { [DATA_FILE]: { content: data } }
-          })
-        });
-        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-      } else {
-        // Create new gist
-        const res = await fetch('https://api.github.com/gists', {
-          method: 'POST',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            description: 'Dwindle - Event Data (auto-synced)',
-            public: false,
-            files: { [DATA_FILE]: { content: data } }
-          })
-        });
-        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-        const result = await res.json();
-        localStorage.setItem('dwindle_gist_id', result.id);
-      }
-
-      updateSyncStatusDisplay('Synced to cloud', 'green');
-    } catch (err) {
-      console.error('Sync push failed:', err);
-      updateSyncStatusDisplay('Sync error - click to check settings', 'red');
-    }
-  }
-
-  async function pullFromCloud() {
-    const token = getToken();
-    const gistId = getGistId();
-    if (!token || !gistId) return;
-
-    try {
-      updateSyncStatusDisplay('Loading from cloud...', 'yellow');
-
-      const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-        headers: { 'Authorization': `token ${token}` }
-      });
-
-      if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-
-      const gist = await res.json();
-      const file = gist.files[DATA_FILE];
-
-      if (file && file.content) {
-        const cloudEvents = JSON.parse(file.content);
-        if (Array.isArray(cloudEvents)) {
-          // Merge: cloud wins for conflicts, keep unique from both sides
-          const merged = mergeEvents(events, cloudEvents);
-          events = merged;
-          localStorage.setItem('dwindle_events', JSON.stringify(events));
-          renderFilterBar();
-          renderEvents();
-        }
-      }
-
-      updateSyncStatusDisplay('Synced to cloud', 'green');
-    } catch (err) {
-      console.error('Sync pull failed:', err);
-      updateSyncStatusDisplay('Sync error - click to check settings', 'red');
-    }
-  }
-
-  function mergeEvents(local, cloud) {
-    const map = new Map();
-    // Local events first
-    local.forEach(e => map.set(e.id, e));
-    // Cloud events overwrite (cloud is source of truth for shared items)
-    cloud.forEach(e => map.set(e.id, e));
-    return [...map.values()];
-  }
-
-  // --- Settings Modal ---
-  function openSettingsModal() {
-    document.getElementById('settingsToken').value = getToken();
-    document.getElementById('settingsGistId').value = getGistId();
-    document.getElementById('settingsOverlay').classList.add('open');
-  }
-
-  function closeSettings() {
-    document.getElementById('settingsOverlay').classList.remove('open');
-  }
-
-  function closeSettingsOutside(e) {
-    if (e.target === e.currentTarget) closeSettings();
-  }
-
-  async function saveSyncSettings() {
-    const token = document.getElementById('settingsToken').value.trim();
-    const gistId = document.getElementById('settingsGistId').value.trim();
-
-    if (!token) {
-      alert('Please enter a GitHub Personal Access Token.');
-      return;
-    }
-
-    localStorage.setItem('dwindle_gh_token', token);
-    if (gistId) {
-      localStorage.setItem('dwindle_gist_id', gistId);
-    }
-
-    closeSettings();
-    updateSyncStatusDisplay('Syncing...', 'yellow');
-
-    if (gistId) {
-      // Pull existing data then push merged
-      await pullFromCloud();
-      await pushToCloud();
-    } else {
-      // First time - create gist with current data
-      await pushToCloud();
-    }
-  }
-
-  function clearSyncSettings() {
-    if (!confirm('Disconnect cloud sync? Your local data will be kept.')) return;
-    localStorage.removeItem('dwindle_gh_token');
-    localStorage.removeItem('dwindle_gist_id');
-    closeSettings();
-    updateSyncStatusDisplay();
   }
 
   // --- Color swatches ---
@@ -1027,10 +1009,8 @@
     return d.innerHTML;
   }
 
-  // --- Modal ---
+  // --- Event Modal ---
   function openModal(id) {
-    const overlay = document.getElementById('modalOverlay');
-    const title = document.getElementById('modalTitle');
     document.getElementById('editId').value = '';
     document.getElementById('eventName').value = '';
     document.getElementById('eventDate').value = '';
@@ -1042,10 +1022,11 @@
     if (id) {
       const ev = events.find(e => e.id === id);
       if (ev) {
-        title.textContent = 'Edit Event';
+        document.getElementById('modalTitle').textContent = 'Edit Event';
         document.getElementById('editId').value = ev.id;
         document.getElementById('eventName').value = ev.name;
-        document.getElementById('eventDate').value = ev.date.split('T')[0];
+        const datePart = ev.date.includes('T') ? ev.date.split('T')[0] : ev.date.split(' ')[0];
+        document.getElementById('eventDate').value = datePart;
         if (ev.date.includes('T') && !ev.date.endsWith('T00:00')) {
           const timeParts = ev.date.split('T')[1];
           document.getElementById('eventTime').value = timeParts.substring(0, 5);
@@ -1055,12 +1036,12 @@
         selectedColor = ev.color || COLORS[0];
       }
     } else {
-      title.textContent = 'New Event';
+      document.getElementById('modalTitle').textContent = 'New Event';
     }
 
     renderColorSwatches();
     updateCategoryDatalist();
-    overlay.classList.add('open');
+    document.getElementById('modalOverlay').classList.add('open');
     setTimeout(() => document.getElementById('eventName').focus(), 100);
   }
 
@@ -1068,11 +1049,7 @@
     document.getElementById('modalOverlay').classList.remove('open');
   }
 
-  function closeModalOutside(e) {
-    if (e.target === e.currentTarget) closeModal();
-  }
-
-  function saveEvent(e) {
+  async function saveEvent(e) {
     e.preventDefault();
     const id = document.getElementById('editId').value;
     const name = document.getElementById('eventName').value.trim();
@@ -1083,37 +1060,36 @@
 
     const dateStr = time ? `${date}T${time}` : `${date}T00:00`;
 
-    if (id) {
-      const ev = events.find(e => e.id === id);
-      if (ev) {
-        ev.name = name;
-        ev.date = dateStr;
-        ev.category = category;
-        ev.notes = notes;
-        ev.color = selectedColor;
+    try {
+      if (id) {
+        await updateEventDB(id, { name, date: dateStr, category, notes, color: selectedColor });
+        const ev = events.find(e => e.id === id);
+        if (ev) {
+          ev.name = name; ev.date = dateStr; ev.category = category;
+          ev.notes = notes; ev.color = selectedColor;
+        }
+      } else {
+        const row = await insertEventDB({ name, date: dateStr, category, notes, color: selectedColor });
+        events.push({
+          id: row.id,
+          name, date: dateStr, category, notes,
+          color: selectedColor,
+          createdAt: new Date(row.created_at).getTime()
+        });
       }
-    } else {
-      events.push({
-        id: crypto.randomUUID(),
-        name,
-        date: dateStr,
-        category,
-        notes,
-        color: selectedColor,
-        createdAt: Date.now()
-      });
+    } catch (err) {
+      console.error('Save failed:', err);
+      alert('Failed to save event. Please try again.');
+      return;
     }
 
-    saveEvents();
     closeModal();
     renderFilterBar();
     renderEvents();
   }
 
   // --- Edit / Delete ---
-  function editEvent(id) {
-    openModal(id);
-  }
+  function editEvent(id) { openModal(id); }
 
   function deleteEvent(id) {
     document.getElementById('deleteId').value = id;
@@ -1124,14 +1100,15 @@
     document.getElementById('deleteOverlay').classList.remove('open');
   }
 
-  function closeDeleteOutside(e) {
-    if (e.target === e.currentTarget) closeDelete();
-  }
-
-  function confirmDelete() {
+  async function confirmDelete() {
     const id = document.getElementById('deleteId').value;
-    events = events.filter(e => e.id !== id);
-    saveEvents();
+    try {
+      await deleteEventDB(id);
+      events = events.filter(e => e.id !== id);
+    } catch (err) {
+      console.error('Delete failed:', err);
+      alert('Failed to delete event.');
+    }
     closeDelete();
     renderFilterBar();
     renderEvents();
@@ -1149,29 +1126,41 @@
     URL.revokeObjectURL(url);
   }
 
-  function importData(e) {
+  async function importData(e) {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(ev) {
+    reader.onload = async function(ev) {
       try {
         const imported = JSON.parse(ev.target.result);
         if (!Array.isArray(imported)) throw new Error('Invalid format');
 
-        const existingIds = new Set(events.map(e => e.id));
         let added = 0;
-        imported.forEach(item => {
-          if (!item.id) item.id = crypto.randomUUID();
-          if (!existingIds.has(item.id)) {
-            events.push(item);
+        for (const item of imported) {
+          try {
+            const row = await insertEventDB({
+              name: item.name,
+              date: item.date,
+              category: item.category || '',
+              notes: item.notes || '',
+              color: item.color || '#6c63ff'
+            });
+            events.push({
+              id: row.id,
+              name: item.name,
+              date: item.date,
+              category: item.category || '',
+              notes: item.notes || '',
+              color: item.color || '#6c63ff',
+              createdAt: new Date(row.created_at).getTime()
+            });
             added++;
-          }
-        });
+          } catch {}
+        }
 
-        saveEvents();
         renderFilterBar();
         renderEvents();
-        alert(`Imported ${added} new event${added !== 1 ? 's' : ''}. ${imported.length - added} duplicate${imported.length - added !== 1 ? 's' : ''} skipped.`);
+        alert(`Imported ${added} event${added !== 1 ? 's' : ''}.`);
       } catch (err) {
         alert('Error importing file: ' + err.message);
       }
@@ -1180,208 +1169,22 @@
     e.target.value = '';
   }
 
-  // --- Keyboard ---
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeModal();
-      closeDelete();
-      closeSettings();
-      closeChangePw();
-      closeForgotPw();
-    }
-  });
-
-  // --- Password Lock ---
-  async function hashPassword(pw) {
-    const data = new TextEncoder().encode(pw);
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  function generateRecoveryCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = '';
-    for (let i = 0; i < 12; i++) {
-      if (i > 0 && i % 4 === 0) code += '-';
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return code;
-  }
-
-  function isFirstTime() {
-    return !localStorage.getItem('dwindle_pw_hash');
-  }
-
-  function isUnlocked() {
-    return sessionStorage.getItem('dwindle_unlocked') === 'true';
-  }
-
-  async function setPasswordAndShowRecovery(pw) {
-    const hash = await hashPassword(pw);
-    const recovery = generateRecoveryCode();
-    const recoveryHash = await hashPassword(recovery);
-
-    localStorage.setItem('dwindle_pw_hash', hash);
-    localStorage.setItem('dwindle_recovery_hash', recoveryHash);
-
-    // Show recovery code
-    document.getElementById('recoveryCodeDisplay').textContent = recovery;
-    document.getElementById('recoveryOverlay').classList.add('open');
-  }
-
-  async function handleLock() {
-    const input = document.getElementById('lockInput');
-    const pw = input.value;
-    if (!pw) return;
-
-    const errorEl = document.getElementById('lockError');
-
-    if (isFirstTime()) {
-      await setPasswordAndShowRecovery(pw);
-      sessionStorage.setItem('dwindle_unlocked', 'true');
-    } else {
-      const hash = await hashPassword(pw);
-      const stored = localStorage.getItem('dwindle_pw_hash');
-      if (hash === stored) {
-        sessionStorage.setItem('dwindle_unlocked', 'true');
-        errorEl.textContent = '';
-        showApp();
-      } else {
-        errorEl.textContent = 'Incorrect password. Try again.';
-        input.value = '';
-        input.focus();
-      }
-    }
-  }
-
-  function closeRecoveryModal() {
-    document.getElementById('recoveryOverlay').classList.remove('open');
-    showApp();
-  }
-
-  function copyRecoveryCode() {
-    const code = document.getElementById('recoveryCodeDisplay').textContent;
-    navigator.clipboard.writeText(code).then(() => {
-      alert('Recovery code copied to clipboard!');
-    });
-  }
-
-  function showApp() {
-    document.getElementById('lockScreen').classList.add('hidden');
-    document.getElementById('appContainer').style.display = '';
-    init();
-  }
-
-  function setupLockScreen() {
-    const lockInput = document.getElementById('lockInput');
-    const lockMessage = document.getElementById('lockMessage');
-    const lockBtn = document.getElementById('lockBtn');
-    const lockNote = document.getElementById('lockSetupNote');
-    const forgotLink = document.getElementById('forgotLink');
-
-    if (isFirstTime()) {
-      lockMessage.textContent = 'Create a password to protect your events';
-      lockBtn.textContent = 'Set Password';
-      lockNote.textContent = 'You\'ll use this password each time you open Dwindle.';
-      forgotLink.style.display = 'none';
-    } else {
-      lockMessage.textContent = 'Enter your password';
-      lockBtn.textContent = 'Unlock';
-      lockNote.textContent = '';
-      forgotLink.style.display = 'inline-block';
-    }
-
-    lockInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleLock();
-    });
-
-    lockInput.focus();
-  }
-
-  // --- Change Password ---
-  function openChangePasswordModal() {
-    document.getElementById('changePwCurrent').value = '';
-    document.getElementById('changePwNew').value = '';
-    document.getElementById('changePwError').textContent = '';
-    document.getElementById('changePwTitle').textContent = 'Change Password';
-    document.getElementById('changePwCurrentGroup').style.display = '';
-    document.getElementById('changePwNewLabel').textContent = 'New Password';
-    document.getElementById('changePwOverlay').classList.add('open');
-  }
-
-  function closeChangePw() {
-    document.getElementById('changePwOverlay').classList.remove('open');
-  }
-
-  async function handleChangePassword() {
-    const current = document.getElementById('changePwCurrent').value;
-    const newPw = document.getElementById('changePwNew').value;
-    const errorEl = document.getElementById('changePwError');
-
-    if (!current || !newPw) {
-      errorEl.textContent = 'Please fill in both fields.';
-      return;
-    }
-
-    const currentHash = await hashPassword(current);
-    const stored = localStorage.getItem('dwindle_pw_hash');
-
-    if (currentHash !== stored) {
-      errorEl.textContent = 'Current password is incorrect.';
-      return;
-    }
-
-    await setPasswordAndShowRecovery(newPw);
-    closeChangePw();
-  }
-
-  // --- Forgot Password ---
-  function showForgotPassword() {
-    document.getElementById('forgotRecoveryCode').value = '';
-    document.getElementById('forgotNewPw').value = '';
-    document.getElementById('forgotPwError').textContent = '';
-    document.getElementById('forgotPwOverlay').classList.add('open');
-  }
-
-  function closeForgotPw() {
-    document.getElementById('forgotPwOverlay').classList.remove('open');
-  }
-
-  async function handleForgotPassword() {
-    const code = document.getElementById('forgotRecoveryCode').value.trim().toUpperCase();
-    const newPw = document.getElementById('forgotNewPw').value;
-    const errorEl = document.getElementById('forgotPwError');
-
-    if (!code || !newPw) {
-      errorEl.textContent = 'Please fill in both fields.';
-      return;
-    }
-
-    const codeHash = await hashPassword(code);
-    const storedRecovery = localStorage.getItem('dwindle_recovery_hash');
-
-    if (!storedRecovery || codeHash !== storedRecovery) {
-      errorEl.textContent = 'Invalid recovery code.';
-      return;
-    }
-
-    // Reset password and generate new recovery code
-    await setPasswordAndShowRecovery(newPw);
-    closeForgotPw();
-    sessionStorage.setItem('dwindle_unlocked', 'true');
-  }
-
   // --- Service Worker ---
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 
-  // --- Start ---
-  if (isUnlocked()) {
-    showApp();
-  } else {
-    setupLockScreen();
-  }
+  // --- Init ---
+  (async function() {
+    if (loadSession()) {
+      const valid = await refreshSession();
+      if (valid) {
+        showApp();
+        return;
+      }
+    }
+    document.getElementById('authScreen').style.display = '';
+  })();
 </script>
 
 </body>
