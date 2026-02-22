@@ -13,6 +13,7 @@
     --border: #2a3a5c;
     --accent: #6c63ff;
     --danger: #ff6b6b;
+    --success: #2ed573;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,6 +48,29 @@
     color: var(--text-muted);
     font-size: 0.9rem;
   }
+
+  /* Sync status */
+  .sync-status {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .sync-status .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .sync-status .dot.green { background: var(--success); }
+  .sync-status .dot.yellow { background: #feca57; }
+  .sync-status .dot.red { background: var(--danger); }
+  .sync-status .dot.gray { background: var(--text-muted); }
 
   /* Toolbar */
   .toolbar {
@@ -240,6 +264,8 @@
     width: 100%;
     max-width: 460px;
     border: 1px solid var(--border);
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   .modal h2 {
@@ -278,6 +304,12 @@
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
+  }
+
+  .form-group .hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
   }
 
   .color-options {
@@ -347,6 +379,10 @@
     <h1>Dwindle</h1>
     <p>Track your moments &mdash; past and future</p>
   </header>
+
+  <div class="sync-status" id="syncStatus" onclick="openSettingsModal()">
+    <span class="dot gray"></span> Click to set up cloud sync
+  </div>
 
   <div class="toolbar">
     <div class="toolbar-group">
@@ -421,6 +457,33 @@
   </div>
 </div>
 
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
+  <div class="modal">
+    <h2>Cloud Sync Settings</h2>
+    <p style="color:var(--text-muted); margin-bottom:16px; font-size:0.85rem;">
+      Your events are automatically saved to a GitHub Gist so they're available on any device. You only need to set this up once.
+    </p>
+    <div class="form-group">
+      <label>GitHub Personal Access Token</label>
+      <input type="password" id="settingsToken" placeholder="ghp_...">
+      <p class="hint">
+        Create one at GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic). Only the <strong>gist</strong> scope is needed.
+      </p>
+    </div>
+    <div class="form-group" id="gistIdGroup">
+      <label>Gist ID (leave blank to create a new one)</label>
+      <input type="text" id="settingsGistId" placeholder="Auto-created on first sync">
+      <p class="hint">If you already set up Dwindle on another device, paste that Gist ID here to sync.</p>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn danger" onclick="clearSyncSettings()" style="margin-right:auto;">Disconnect</button>
+      <button type="button" class="btn" onclick="closeSettings()">Cancel</button>
+      <button type="button" class="btn primary" onclick="saveSyncSettings()">Save &amp; Sync</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const COLORS = [
     '#6c63ff', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3',
@@ -428,20 +491,32 @@
     '#2ed573', '#1e90ff', '#eccc68', '#a29bfe', '#fd79a8'
   ];
 
+  const REPO_OWNER = 'elcoche2025';
+  const REPO_NAME = 'dwindle';
+  const DATA_FILE = 'data.json';
+
   let events = [];
   let activeFilter = 'all';
   let selectedColor = COLORS[0];
+  let syncTimer = null;
+  let fileSha = null;
 
   // --- Init ---
-  function init() {
+  async function init() {
     loadEvents();
     renderColorSwatches();
     renderFilterBar();
     renderEvents();
     setInterval(renderCountdowns, 1000);
+    updateSyncStatusDisplay();
+
+    // If sync is configured, pull from cloud on load
+    if (getToken()) {
+      await pullFromCloud();
+    }
   }
 
-  // --- Storage ---
+  // --- Local Storage ---
   function loadEvents() {
     try {
       events = JSON.parse(localStorage.getItem('dwindle_events') || '[]');
@@ -450,6 +525,180 @@
 
   function saveEvents() {
     localStorage.setItem('dwindle_events', JSON.stringify(events));
+    scheduleSyncToCloud();
+  }
+
+  // --- GitHub Gist Sync ---
+  function getToken() {
+    return localStorage.getItem('dwindle_gh_token') || '';
+  }
+
+  function getGistId() {
+    return localStorage.getItem('dwindle_gist_id') || '';
+  }
+
+  function updateSyncStatusDisplay(msg, color) {
+    const el = document.getElementById('syncStatus');
+    if (msg) {
+      el.innerHTML = `<span class="dot ${color}"></span> ${msg}`;
+      return;
+    }
+    if (getToken() && getGistId()) {
+      el.innerHTML = `<span class="dot green"></span> Synced to cloud`;
+    } else if (getToken()) {
+      el.innerHTML = `<span class="dot yellow"></span> Setting up sync...`;
+    } else {
+      el.innerHTML = `<span class="dot gray"></span> Click to set up cloud sync`;
+    }
+  }
+
+  function scheduleSyncToCloud() {
+    if (!getToken()) return;
+    if (syncTimer) clearTimeout(syncTimer);
+    updateSyncStatusDisplay('Saving...', 'yellow');
+    syncTimer = setTimeout(() => pushToCloud(), 1500);
+  }
+
+  async function pushToCloud() {
+    const token = getToken();
+    const gistId = getGistId();
+    if (!token) return;
+
+    try {
+      const data = JSON.stringify(events, null, 2);
+
+      if (gistId) {
+        // Update existing gist
+        const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            files: { [DATA_FILE]: { content: data } }
+          })
+        });
+        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+      } else {
+        // Create new gist
+        const res = await fetch('https://api.github.com/gists', {
+          method: 'POST',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            description: 'Dwindle - Event Data (auto-synced)',
+            public: false,
+            files: { [DATA_FILE]: { content: data } }
+          })
+        });
+        if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+        const result = await res.json();
+        localStorage.setItem('dwindle_gist_id', result.id);
+      }
+
+      updateSyncStatusDisplay('Synced to cloud', 'green');
+    } catch (err) {
+      console.error('Sync push failed:', err);
+      updateSyncStatusDisplay('Sync error - click to check settings', 'red');
+    }
+  }
+
+  async function pullFromCloud() {
+    const token = getToken();
+    const gistId = getGistId();
+    if (!token || !gistId) return;
+
+    try {
+      updateSyncStatusDisplay('Loading from cloud...', 'yellow');
+
+      const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+
+      if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+
+      const gist = await res.json();
+      const file = gist.files[DATA_FILE];
+
+      if (file && file.content) {
+        const cloudEvents = JSON.parse(file.content);
+        if (Array.isArray(cloudEvents)) {
+          // Merge: cloud wins for conflicts, keep unique from both sides
+          const merged = mergeEvents(events, cloudEvents);
+          events = merged;
+          localStorage.setItem('dwindle_events', JSON.stringify(events));
+          renderFilterBar();
+          renderEvents();
+        }
+      }
+
+      updateSyncStatusDisplay('Synced to cloud', 'green');
+    } catch (err) {
+      console.error('Sync pull failed:', err);
+      updateSyncStatusDisplay('Sync error - click to check settings', 'red');
+    }
+  }
+
+  function mergeEvents(local, cloud) {
+    const map = new Map();
+    // Local events first
+    local.forEach(e => map.set(e.id, e));
+    // Cloud events overwrite (cloud is source of truth for shared items)
+    cloud.forEach(e => map.set(e.id, e));
+    return [...map.values()];
+  }
+
+  // --- Settings Modal ---
+  function openSettingsModal() {
+    document.getElementById('settingsToken').value = getToken();
+    document.getElementById('settingsGistId').value = getGistId();
+    document.getElementById('settingsOverlay').classList.add('open');
+  }
+
+  function closeSettings() {
+    document.getElementById('settingsOverlay').classList.remove('open');
+  }
+
+  function closeSettingsOutside(e) {
+    if (e.target === e.currentTarget) closeSettings();
+  }
+
+  async function saveSyncSettings() {
+    const token = document.getElementById('settingsToken').value.trim();
+    const gistId = document.getElementById('settingsGistId').value.trim();
+
+    if (!token) {
+      alert('Please enter a GitHub Personal Access Token.');
+      return;
+    }
+
+    localStorage.setItem('dwindle_gh_token', token);
+    if (gistId) {
+      localStorage.setItem('dwindle_gist_id', gistId);
+    }
+
+    closeSettings();
+    updateSyncStatusDisplay('Syncing...', 'yellow');
+
+    if (gistId) {
+      // Pull existing data then push merged
+      await pullFromCloud();
+      await pushToCloud();
+    } else {
+      // First time - create gist with current data
+      await pushToCloud();
+    }
+  }
+
+  function clearSyncSettings() {
+    if (!confirm('Disconnect cloud sync? Your local data will be kept.')) return;
+    localStorage.removeItem('dwindle_gh_token');
+    localStorage.removeItem('dwindle_gist_id');
+    closeSettings();
+    updateSyncStatusDisplay();
   }
 
   // --- Color swatches ---
@@ -624,7 +873,6 @@
         title.textContent = 'Edit Event';
         document.getElementById('editId').value = ev.id;
         document.getElementById('eventName').value = ev.name;
-        const dateObj = new Date(ev.date);
         document.getElementById('eventDate').value = ev.date.split('T')[0];
         if (ev.date.includes('T') && !ev.date.endsWith('T00:00')) {
           const timeParts = ev.date.split('T')[1];
@@ -738,7 +986,6 @@
         const imported = JSON.parse(ev.target.result);
         if (!Array.isArray(imported)) throw new Error('Invalid format');
 
-        // Merge: add events that don't already exist by ID
         const existingIds = new Set(events.map(e => e.id));
         let added = 0;
         imported.forEach(item => {
@@ -766,6 +1013,7 @@
     if (e.key === 'Escape') {
       closeModal();
       closeDelete();
+      closeSettings();
     }
   });
 
