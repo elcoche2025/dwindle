@@ -420,6 +420,23 @@
     color: var(--text-muted);
   }
 
+  .backup-banner {
+    background: var(--card-bg);
+    border: 1px solid #feca57;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+
+  .backup-banner .msg { color: var(--text-muted); }
+  .backup-banner .actions { display: flex; gap: 8px; }
+
   @media (max-width: 500px) {
     .countdown-value { font-size: 1.4rem; }
     .event-countdown { gap: 12px; }
@@ -504,6 +521,14 @@
   <div class="user-bar" id="userBar">
     <span id="userEmail"></span>
     <span class="sign-out" onclick="signOut()">Sign out</span>
+  </div>
+
+  <div class="backup-banner" id="backupBanner" style="display:none;">
+    <span class="msg">It's been a while since your last backup. Export your data to keep a local copy?</span>
+    <span class="actions">
+      <button class="btn" onclick="snoozeBackup()">Remind Later</button>
+      <button class="btn primary" onclick="exportAndDismiss()">Export Now</button>
+    </span>
   </div>
 
   <div class="toolbar">
@@ -803,6 +828,7 @@
       }));
       renderFilterBar();
       renderEvents();
+      checkBackupReminder();
     } catch (err) {
       console.error('Failed to load events:', err);
     }
@@ -1167,6 +1193,34 @@
     };
     reader.readAsText(file);
     e.target.value = '';
+  }
+
+  // --- Backup Reminder (every 30 days) ---
+  const BACKUP_INTERVAL = 30 * 24 * 60 * 60 * 1000; // 30 days
+  const BACKUP_KEY = 'dwindle_last_backup';
+
+  function checkBackupReminder() {
+    const last = parseInt(localStorage.getItem(BACKUP_KEY) || '0');
+    if (Date.now() - last > BACKUP_INTERVAL && events.length > 0) {
+      document.getElementById('backupBanner').style.display = '';
+    }
+  }
+
+  function markBackupDone() {
+    localStorage.setItem(BACKUP_KEY, Date.now().toString());
+    document.getElementById('backupBanner').style.display = 'none';
+  }
+
+  function exportAndDismiss() {
+    exportData();
+    markBackupDone();
+  }
+
+  function snoozeBackup() {
+    // Snooze for 7 days instead of full 30
+    const snoozeUntil = Date.now() - BACKUP_INTERVAL + (7 * 24 * 60 * 60 * 1000);
+    localStorage.setItem(BACKUP_KEY, snoozeUntil.toString());
+    document.getElementById('backupBanner').style.display = 'none';
   }
 
   // --- Service Worker ---
