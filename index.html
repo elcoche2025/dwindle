@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dwindle">
 <meta name="theme-color" content="#1a1a2e">
+<meta name="robots" content="noindex, nofollow">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
@@ -369,6 +370,73 @@
 
   .sort-select:focus { outline: none; border-color: var(--accent); }
 
+  /* Lock screen */
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .lock-screen.hidden { display: none; }
+
+  .lock-box {
+    text-align: center;
+    max-width: 340px;
+    width: 100%;
+  }
+
+  .lock-box h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .lock-box p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+  }
+
+  .lock-box input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+  }
+
+  .lock-box input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .lock-box .error {
+    color: var(--danger);
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+    min-height: 1.2em;
+  }
+
+  .lock-box .btn { width: 100%; padding: 12px; font-size: 1rem; }
+
+  .lock-box .setup-note {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    margin-top: 16px;
+  }
+
   /* Responsive */
   @media (max-width: 500px) {
     .countdown-value { font-size: 1.4rem; }
@@ -380,7 +448,19 @@
 </head>
 <body>
 
-<div class="container">
+<!-- Lock Screen -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <h1>Dwindle</h1>
+    <p id="lockMessage">Enter your password</p>
+    <input type="password" id="lockInput" placeholder="Password" autocomplete="off">
+    <div class="error" id="lockError"></div>
+    <button class="btn primary" id="lockBtn" onclick="handleLock()">Unlock</button>
+    <p class="setup-note" id="lockSetupNote"></p>
+  </div>
+</div>
+
+<div class="container" id="appContainer" style="display:none;">
   <header>
     <h1>Dwindle</h1>
     <p>Track your moments &mdash; past and future</p>
@@ -1023,13 +1103,90 @@
     }
   });
 
+  // --- Password Lock ---
+  async function hashPassword(pw) {
+    const data = new TextEncoder().encode(pw);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function isFirstTime() {
+    return !localStorage.getItem('dwindle_pw_hash');
+  }
+
+  function isUnlocked() {
+    return sessionStorage.getItem('dwindle_unlocked') === 'true';
+  }
+
+  async function handleLock() {
+    const input = document.getElementById('lockInput');
+    const pw = input.value;
+    if (!pw) return;
+
+    const errorEl = document.getElementById('lockError');
+
+    if (isFirstTime()) {
+      // First time — set password
+      const hash = await hashPassword(pw);
+      localStorage.setItem('dwindle_pw_hash', hash);
+      sessionStorage.setItem('dwindle_unlocked', 'true');
+      showApp();
+    } else {
+      // Verify password
+      const hash = await hashPassword(pw);
+      const stored = localStorage.getItem('dwindle_pw_hash');
+      if (hash === stored) {
+        sessionStorage.setItem('dwindle_unlocked', 'true');
+        errorEl.textContent = '';
+        showApp();
+      } else {
+        errorEl.textContent = 'Incorrect password. Try again.';
+        input.value = '';
+        input.focus();
+      }
+    }
+  }
+
+  function showApp() {
+    document.getElementById('lockScreen').classList.add('hidden');
+    document.getElementById('appContainer').style.display = '';
+    init();
+  }
+
+  function setupLockScreen() {
+    const lockInput = document.getElementById('lockInput');
+    const lockMessage = document.getElementById('lockMessage');
+    const lockBtn = document.getElementById('lockBtn');
+    const lockNote = document.getElementById('lockSetupNote');
+
+    if (isFirstTime()) {
+      lockMessage.textContent = 'Create a password to protect your events';
+      lockBtn.textContent = 'Set Password';
+      lockNote.textContent = 'You\'ll use this password each time you open Dwindle.';
+    } else {
+      lockMessage.textContent = 'Enter your password';
+      lockBtn.textContent = 'Unlock';
+      lockNote.textContent = '';
+    }
+
+    lockInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleLock();
+    });
+
+    lockInput.focus();
+  }
+
   // --- Service Worker ---
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 
   // --- Start ---
-  init();
+  if (isUnlocked()) {
+    showApp();
+  } else {
+    setupLockScreen();
+  }
 </script>
 
 </body>
